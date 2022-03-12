@@ -1,13 +1,14 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import { MongoClient } from 'mongodb';
+import path from 'path';
 
 // Create express app
 // npx babel-node src/server.js or npx nodemon --exec babel-node src/server.js
 
-
 const app = express();
 
+app.use(express.static(path.join(__dirname, '/build')))
 app.use(bodyParser.json());
 
 const withDB = async (operations, res) => {
@@ -79,7 +80,9 @@ app.post('/api/articles/:name/add-comment', async (req, res) => {
     }, res);
 });
 
-
+app.get('*', (req, res) => {
+    res.sendFile(path.json(__dirname +'build/index.html'));
+});
 app.listen(8000, () => console.log("Listening on port: 8000"));
 
 
